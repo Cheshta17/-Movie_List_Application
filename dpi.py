@@ -1,27 +1,35 @@
+import pandas as pd
 import streamlit as st
 
-# Title and Introduction
+# Assuming you have loaded your data using pd.read_csv("movie_metadata.csv")
+# and assigned it to the variable 'data'
+
+# Function to find top movies by IMDb score (assuming 'imdb_score' and 'movie_title' columns exist)
+def top_imdb_movies(data, n=10):
+    """Returns the top n movies with the highest IMDb score."""
+
+    # Sort by descending IMDb score and select the top n rows
+    top_movies = data.sort_values(by="imdb_score", ascending=False).head(n)
+
+    # Select relevant columns for display
+    top_movies_df = top_movies[["movie_title", "imdb_score"]]  # Adjust columns as needed
+
+    # Return a DataFrame suitable for st.dataframe
+    return top_movies_df
+
+# Streamlit App Structure
 st.title("Movie Exploration App")
 st.write("This app allows you to explore various aspects of the movie dataset.")
 
-# Navigation Sidebar (Optional)
-# Include navigation elements here if you have multiple sections
-
-# Data Exploration Sections (Adapt based on your notebook's structure):
+# Section for Top Movies by IMDb Score
 st.header("Top Movies by IMDb Score")
-st.dataframe(top_imdb_movies(data.copy()))  # Use a copy to avoid modifying original data
+try:
+    # Use a copy to avoid modifying original data
+    top_movies_data = top_imdb_movies(data.copy())
+    st.dataframe(top_movies_data)
+except Exception as e:
+    st.error("An error occurred while processing data:")
+    st.write(e)  # Display the error message for debugging
 
-st.header("Top Movies by Profit")
-st.dataframe(top_profit_movies(data.copy()))
+# ... (add more sections for other analyses and visualizations)
 
-# ... (add more sections for different analyses and visualizations using Streamlit functions like st.bar_chart, st.map, etc.)
-
-# Interactive Elements (Optional, adapt based on your notebook's interactive elements):
-st.sidebar.header("Filter Movies")
-language_filter = st.sidebar.selectbox("Select Language", data["language"].unique())
-filtered_data = data[data["language"] == language_filter]
-
-st.header("Movies in Selected Language")
-st.dataframe(filtered_data)
-
-# ... (add more interactive elements using Streamlit widgets like st.slider, st.selectbox, etc.)
