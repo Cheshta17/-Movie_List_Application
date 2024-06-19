@@ -1,16 +1,21 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import os
 
 # Load the movie data
 data = pd.read_csv('movie_metadata.csv')
 
+# Define the file paths
+genres_file = os.path.join(os.getcwd(), 'genres_data.pkl')
+recommendation_engine_file = os.path.join(os.getcwd(), 'recommendation_engine.pkl')
+
 # Load the pre-computed data
-with open('genres_data.pkl', 'rb') as f:
+with open(genres_file, 'rb') as f:
     genres = pickle.load(f)
 
 # Load the recommendation engine
-with open('recommendation_engine.pkl', 'rb') as f:
+with open(recommendation_engine_file, 'rb') as f:
     recommendation_engine = pickle.load(f)
 
 # Streamlit app
