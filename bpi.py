@@ -2,20 +2,23 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 import pickle
 
 # Load the data
-@st.cache
+@st.cache_data
 def load_data():
     movies = pd.read_csv('tmdb_5000_movies.csv')
     credits = pd.read_csv('tmdb_5000_credits.csv')
     return movies, credits
 
 # Load processed data and similarity matrix
-@st.cache
+@st.cache_data
 def load_processed_data():
-    new_df = pickle.load(open('movies_dict.pkl', 'rb'))
-    similarity = pickle.load(open('similarity.pkl', 'rb'))
+    with open('movies_dict.pkl', 'rb') as f:
+        new_df = pickle.load(f)
+    with open('similarity.pkl', 'rb') as f:
+        similarity = pickle.load(f)
     return new_df, similarity
 
 # Convert dict back to DataFrame
@@ -31,7 +34,7 @@ new_df = dict_to_df(new_df)
 def recommend(movie):
     movie_idx = new_df[new_df['title'] == movie].index[0]
     distances = similarity[movie_idx]
-    movie_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x:x[1])[1:6]
+    movie_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
     recommended_movies = [new_df.iloc[i[0]].title for i in movie_list]
     return recommended_movies
 
