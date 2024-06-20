@@ -45,10 +45,10 @@ def update_movie():
         st.write("Current Details:")
         st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
 
-        new_dir = st.text_input("Enter New Director Name (Leave blank if no change)")
-        new_year = st.number_input("Enter New Release Year (Leave 0 if no change)", min_value=1900, max_value=2024, step=1)
-        new_lang = st.text_input("Enter New Language (Leave blank if no change)")
-        new_rating = st.number_input("Enter New IMDB Score (Leave 0.0 if no change)", min_value=0.0, max_value=10.0, step=0.1)
+        new_dir = st.text_input("Enter New Director Name")
+        new_year = st.number_input("Enter New Release Year", min_value=1900, max_value=2024, step=1)
+        new_lang = st.text_input("Enter New Language ")
+        new_rating = st.number_input("Enter New IMDB Score", min_value=0.0, max_value=10.0, step=0.1)
 
         if new_dir:
             data.at[indx, 'director_name'] = new_dir
