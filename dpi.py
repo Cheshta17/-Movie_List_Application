@@ -9,7 +9,11 @@ def top_imdb_movies(data, n=10):
     """Returns the top n movies with the highest IMDb score."""
 
     # Sort by descending IMDb score and select the top n rows
-    top_movies = data.sort_values(by="imdb_score", ascending=False).head(n)
+    try:
+        top_movies = data.sort_values(by="imdb_score", ascending=False).head(n)
+    except Exception as e:  # Handle potential errors in data sorting
+        st.error("Error sorting data for top movies:", e)
+        return None  # Return None to indicate an error
 
     # Select relevant columns for display
     top_movies_df = top_movies[["movie_title", "imdb_score"]]  # Adjust columns as needed
@@ -26,10 +30,12 @@ st.header("Top Movies by IMDb Score")
 try:
     # Use a copy to avoid modifying original data
     top_movies_data = top_imdb_movies(data.copy())
-    st.dataframe(top_movies_data)
+
+    if top_movies_data is not None:  # Check if data was retrieved successfully
+        st.dataframe(top_movies_data)
+    else:
+        st.error("An error occurred while processing data for top movies.")
 except Exception as e:
-    st.error("An error occurred while processing data:")
-    st.write(e)  # Display the error message for debugging
+    st.error("An error occurred:", e)
 
 # ... (add more sections for other analyses and visualizations)
-
