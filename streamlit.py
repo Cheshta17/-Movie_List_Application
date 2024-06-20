@@ -32,21 +32,6 @@ def filter_movies():
         filtered_data = data[data['director_name'].str.contains(director_name, case=False)]
         st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
 
-    elif filter_option == "Filter by Release Year":
-        year = st.number_input("Enter Release Year")
-        filtered_data = data[data['title_year'].str.contains(year, case=False)]
-        st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
-
-    elif filter_option == "Filter by Language":
-        lang = st.text_input("Enter Movie Language")
-        filtered_data = data[data['language'].str.contains(lang, case=False)]
-        st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
-
-    elif filter_option == "Filter by Rating":
-        rating = st.number_input("Enter Movie Rating")
-        filtered_data = data[data['imdb_score'].str.contains(rating, case=False)]
-        st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
-
 def search_movie():
     movie_name = st.text_input("Enter Movie Name")
     filtered_data = data[data['movie_title'].str.contains(movie_name, case=False)]
