@@ -32,7 +32,6 @@ def filter_movies():
         filtered_data = data[data['director_name'].str.contains(director_name, case=False)]
         st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
 
-    # Add similar conditions for other filter options
 def search_movie():
     movie_name = st.text_input("Enter Movie Name")
     filtered_data = data[data['movie_title'].str.contains(movie_name, case=False)]
@@ -42,7 +41,7 @@ def update_movie():
     filtered_data = data[data['movie_title'].str.contains(movie_name, case=False)]
 
     if not filtered_data.empty:
-        movie_index = filtered_data.index[0]
+        indx = filtered_data.index[0]
         st.write("Current Details:")
         st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
 
@@ -52,13 +51,13 @@ def update_movie():
         new_rating = st.number_input("Enter New IMDB Score (Leave 0.0 if no change)", min_value=0.0, max_value=10.0, step=0.1)
 
         if new_director:
-            data.at[movie_index, 'director_name'] = new_director
+            data.at[indx, 'director_name'] = new_director
         if new_year:
-            data.at[movie_index, 'title_year'] = new_year
+            data.at[indx, 'title_year'] = new_year
         if new_language:
-            data.at[movie_index, 'language'] = new_language
+            data.at[indx, 'language'] = new_language
         if new_rating:
-            data.at[movie_index, 'imdb_score'] = new_rating
+            data.at[indx, 'imdb_score'] = new_rating
 
         st.success("Movie details updated successfully!")
     else:
@@ -68,12 +67,12 @@ def delete_movie():
     filtered_data = data[data['movie_title'].str.contains(movie_name, case=False)]
 
     if not filtered_data.empty:
-        movie_index = filtered_data.index[0]
+        indx = filtered_data.index[0]
         st.write("Movie to be deleted:")
         st.write(filtered_data[['movie_title', 'director_name', 'title_year', 'language', 'imdb_score']])
 
         if st.button("Confirm Delete"):
-            data.drop(movie_index, inplace=True)
+            data.drop(indx, inplace=True)
             st.success("Movie deleted successfully!")
     else:
         st.warning("No movie found with the given name.")
@@ -81,19 +80,19 @@ def main():
     st.title("Movie List Application")
 
     menu = ["Show All Movies", "Add New Movie", "Filter Movies", "Search Movie", "Update Movie", "Delete Movie"]
-    choice = st.sidebar.selectbox("Select an Option", menu)
+    c = st.sidebar.selectbox("Select an Option", menu)
 
-    if choice == "Show All Movies":
+    if c == "Show All Movies":
         show_all_movies()
-    elif choice == "Add New Movie":
+    elif c == "Add New Movie":
         add_new_movie()
-    elif choice == "Filter Movies":
+    elif c == "Filter Movies":
         filter_movies()
-    elif choice == "Search Movie":
+    elif c == "Search Movie":
         search_movie()
-    elif choice == "Update Movie":
+    elif c == "Update Movie":
         update_movie()
-    elif choice == "Delete Movie":
+    elif c == "Delete Movie":
         delete_movie()
 
 if __name__ == "__main__":
